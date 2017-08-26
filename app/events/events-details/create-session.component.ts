@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class CreateSessionComponent implements OnInit {
     newSessionForm: FormGroup
 
-
     ngOnInit() {
         this.name = new FormControl('', Validators.required);
         this.presenter = new FormControl('', Validators.required);
