@@ -19,6 +19,7 @@ import { IEvent, ISession } from './events/shared/event.model'
 import { AuthService } from "./user/auth.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CreateSessionComponent } from "./events/events-details/create-session.component";
+import { SessionListComponent } from "./events/events-details/session-list.component";
 
 @NgModule({
     imports:  [
@@ -35,6 +36,7 @@ import { CreateSessionComponent } from "./events/events-details/create-session.c
         EventDetailsComponent,
         CreateEventComponent,
         CreateSessionComponent,
+        SessionListComponent,
         Error404Component
     ],
     providers: [
