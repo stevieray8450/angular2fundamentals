@@ -9,7 +9,7 @@ import { EventThumbnailComponent } from './events/events-thumbnail.component';
 import { NavbarComponent } from './nav/navbar.component';
 import { EventDetailsComponent } from './events/events-details/event-details.component';
 import { EventsService } from './events/shared/events.service';
-import { ToastrService } from './common/toastr.service';
+import { TOASTR_TOKEN, Toastr } from './common/toastr.service';
 import { appRoutes } from './routes';
 import { CreateEventComponent } from "./events/create-event.component";
 import { Error404Component } from "./errors/404.component";
@@ -21,44 +21,45 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CreateSessionComponent } from "./events/events-details/create-session.component";
 import { SessionListComponent } from "./events/events-details/session-list.component";
 import { CollapsibleWellComponent } from "./common/collapsible-well.component";
+import { DurationPipe } from "./events/shared/duration.pipe";
+
+declare let toastr : Toastr
 
 @NgModule({
-    imports:  [
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes)
-    ],
-    declarations: [
-        EventsAppComponent,
-        EventsListComponent,
-        EventThumbnailComponent,
-        NavbarComponent,
-        EventDetailsComponent,
-        CreateEventComponent,
-        CreateSessionComponent,
-        SessionListComponent,
-        CollapsibleWellComponent,
-        Error404Component
-    ],
-    providers: [
-        EventsService,
-        ToastrService,
-        EventRouteActivatorService,
-        EventsListResolverService,
-        { 
-            provide: 'canDeactivateCreateEvent', 
-            useValue: checkDirtyState
-        },
-        AuthService
-    ],
-    bootstrap: [EventsAppComponent]
+  imports: [
+      BrowserModule,
+      FormsModule,
+      ReactiveFormsModule,
+      RouterModule.forRoot(appRoutes) ],
+  declarations: [ 
+    EventsAppComponent, 
+    EventsListComponent,
+    EventThumbnailComponent, 
+    NavbarComponent,
+    EventDetailsComponent,
+    CreateEventComponent,
+    CreateSessionComponent,
+    Error404Component,
+    SessionListComponent,
+    CollapsibleWellComponent,
+    DurationPipe ],
+  providers: [
+    EventsService, 
+    { provide: TOASTR_TOKEN, useValue: toastr },
+    EventRouteActivatorService,
+    EventsListResolverService,
+    AuthService,
+    {
+      provide: 'canDeactivateCreateEvent', 
+      useValue: checkDirtyState     
+    }],
+  bootstrap: [ EventsAppComponent ]
 })
+export class AppModule { }
 
-export class AppModule {}
+function checkDirtyState(component:CreateEventComponent) {
+  if (component.isDirty)
+    return window.confirm('You have not saved this event, Do you really want to cancel?') 
 
-function checkDirtyState(component: CreateEventComponent) {
-    if (component.isDirty)
-        return window.confirm('You have not saved this event. Do you want to cancel?')
-    return true
-} 
+  return true
+}
